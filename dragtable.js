@@ -136,6 +136,15 @@ dragtable = {
     return {x: x, y: y};
   },
 
+  absolutePosition: function(elt) {
+    var ex = 0, ey = 0;
+    do {
+      ex += elt.offsetLeft;
+      ey += elt.offsetTop;
+    } while (elt = elt.offsetParent);
+    return {x: ex, y: ey};
+  },
+
   // MouseDown handler -- sets up the appropriate mousemove/mouseup handlers
   // and fills in the global dragtable.dragObj object.
   dragStart: function(event, id) {
@@ -154,7 +163,7 @@ dragtable = {
     dragObj.origNode = dragtable.findUp(dragObj.origNode, /T[DH]/);
 
     // Since a column header can't be dragged directly, duplicate its contents
-    // in a div and drag that instead.
+    // in a table and drag that instead.
     // TODO: I can assume a tHead...
     dragObj.table = dragtable.findUp(dragObj.origNode, "TABLE");
     dragObj.startCol = dragtable.findColumn(dragObj.table, pos.x);
@@ -172,15 +181,10 @@ dragtable = {
     if (new_sec) new_sec.appendChild(new_tr);
     new_elt.appendChild(new_sec || new_tr);
 
-    var ex = 0, ey = 0;
-    var obj = dragObj.origNode;
-    do {
-      ex += obj.offsetLeft;
-      ey += obj.offsetTop;
-    } while (obj = obj.offsetParent);
+    var obj_pos = dragtable.absolutePosition(dragObj.origNode);
     new_elt.style.position = "absolute";
-    new_elt.style.left = ex;
-    new_elt.style.top = ey;
+    new_elt.style.left = obj_pos.x + "px";
+    new_elt.style.top = obj_pos.y + "px";
     new_elt.style.width = dragObj.origNode.offsetWidth;
     new_elt.style.height = dragObj.origNode.offsetHeight;
 
@@ -264,8 +268,9 @@ dragtable = {
 
     // Determine whether the drag ended over the table, and over which column.
     var pos = dragtable.eventPosition(event);
-    if (pos.y < dragObj.table.offsetTop ||
-        pos.y > dragObj.table.offsetTop + dragObj.table.offsetHeight) {
+    var table_pos = dragtable.absolutePosition(dragObj.table);
+    if (pos.y < table_pos.y ||
+        pos.y > table_pos.y + dragObj.table.offsetHeight) {
       return;
     }
     var targetCol = dragtable.findColumn(dragObj.table, pos.x);
@@ -278,8 +283,8 @@ dragtable = {
   findColumn: function(table, x) {
     var header = table.tHead.rows[0].cells;
     for (var i = 0; i < header.length; i++) {
-      var left = header[i].offsetLeft;
-      if (left <= x && x <= left + header[i].offsetWidth) {
+      var pos = dragtable.absolutePosition(header[i]);
+      if (pos.x <= x && x <= pos.x + header[i].offsetWidth) {
         return i;
       }
     }
