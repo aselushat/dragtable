@@ -2,6 +2,7 @@
   dragtable v0.9
   June 11, 2008
   Dan Vanderkam, http://danvk.org/dragtable/
+                 http://code.google.com/p/dragtable/
 
   Instructions:
     - Download this file
