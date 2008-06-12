@@ -25,13 +25,13 @@
 // Copyright 2001 by Mike Hall.
 // See http://www.brainjar.com for terms of use.
 //*****************************************************************************
-dragtable = {  
+dragtable = {
   // How far should the mouse move before it's considered a drag, not a click?
   dragRadius2: 100,
   setMinDragDistance: function(x) {
     dragtable.dragRadius2 = x * x;
   },
-  
+
   // Determine browser and version.
   Browser: function() {
     var ua, s, i;
@@ -81,7 +81,7 @@ dragtable = {
       }
     });
   },
-  
+
   // The thead business is taken straight from sorttable.
   makeDraggable: function(table) {
     if (table.getElementsByTagName('thead').length == 0) {
@@ -163,23 +163,40 @@ dragtable = {
     dragObj.origNode = dragtable.findUp(dragObj.origNode, /T[DH]/);
 
     // Since a column header can't be dragged directly, duplicate its contents
-    // in a table and drag that instead.
+    // in a div and drag that instead.
     // TODO: I can assume a tHead...
-    dragObj.table = dragtable.findUp(dragObj.origNode, "TABLE");
-    dragObj.startCol = dragtable.findColumn(dragObj.table, pos.x);
-    if (dragObj == -1) return;
+    var table = dragtable.findUp(dragObj.origNode, "TABLE");
+    dragObj.table = table;
+    dragObj.startCol = dragtable.findColumn(table, pos.x);
+    if (dragObj.startCol == -1) return;
 
-    var tr   = dragtable.findUp(dragObj.origNode, "TR");
-    var tsec = dragtable.findUp(dragObj.origNode, "THEAD") ||
-               dragtable.findUp(dragObj.origNode, "TBODY");
+    var new_elt = dragtable.fullCopy(table, false);
 
-    var new_elt = dragtable.fullCopy(dragObj.table, false);
-    var new_sec = tsec && dragtable.fullCopy(tsec, false);
-    var new_tr  = dragtable.fullCopy(tr, false);
-    var new_td  = dragtable.fullCopy(dragObj.origNode, true);
-    new_tr.appendChild(new_td);
-    if (new_sec) new_sec.appendChild(new_tr);
-    new_elt.appendChild(new_sec || new_tr);
+    // Copy the entire column
+    var copySectionColumn = function(sec, col) {
+      var new_sec = dragtable.fullCopy(sec, false);
+      forEach(sec.rows, function(row) {
+        var cell = row.cells[col];
+        var new_tr = dragtable.fullCopy(row, false);
+        if (row.offsetHeight) new_tr.style.height = row.offsetHeight + "px";
+        var new_td = dragtable.fullCopy(cell, true);
+        if (cell.offsetWidth) new_td.style.width = cell.offsetWidth + "px";
+        new_tr.appendChild(new_td);
+        new_sec.appendChild(new_tr);
+      });
+      return new_sec;
+    };
+
+    // First the heading
+    if (table.tHead) {
+      new_elt.appendChild(copySectionColumn(table.tHead, dragObj.startCol));
+    }
+    forEach(table.tBodies, function(tb) {
+      new_elt.appendChild(copySectionColumn(tb, dragObj.startCol));
+    });
+    if (table.tFoot) {
+      new_elt.appendChild(copySectionColumn(table.tFoot, dragObj.startCol));
+    }
 
     var obj_pos = dragtable.absolutePosition(dragObj.origNode);
     new_elt.style.position = "absolute";
@@ -283,7 +300,9 @@ dragtable = {
   findColumn: function(table, x) {
     var header = table.tHead.rows[0].cells;
     for (var i = 0; i < header.length; i++) {
+      //var left = header[i].offsetLeft;
       var pos = dragtable.absolutePosition(header[i]);
+      //if (left <= x && x <= left + header[i].offsetWidth) {
       if (pos.x <= x && x <= pos.x + header[i].offsetWidth) {
         return i;
       }
@@ -334,8 +353,8 @@ if (document.addEventListener) {
 /*@cc_on @*/
 /*@if (@_win32)
   dgListenOnLoad = true;
-  document.write("<script id=__ie_onload defer src=javascript:void(0)><\/script>");
-  var script = document.getElementById("__ie_onload");
+  document.write("<script id=__dt_onload defer src=javascript:void(0)><\/script>");
+  var script = document.getElementById("__dt_onload");
   script.onreadystatechange = function() {
     if (this.readyState == "complete") {
       dragtable.init(); // call the onload handler
