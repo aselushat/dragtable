@@ -128,12 +128,9 @@ dragtable = {
         + document.body.scrollLeft;
       y = window.event.clientY + document.documentElement.scrollTop
         + document.body.scrollTop;
+      return {x: x, y: y};
     }
-    if (dragtable.browser.isNS) {
-      x = event.clientX + window.scrollX;
-      y = event.clientY + window.scrollY;
-    }
-    return {x: x, y: y};
+    return {x: event.pageX, y: event.pageY};
   },
 
   absolutePosition: function(elt) {
@@ -155,7 +152,7 @@ dragtable = {
     var browser = dragtable.browser;
     if (browser.isIE)
       dragObj.origNode = window.event.srcElement;
-    if (browser.isNS)
+    else
       dragObj.origNode = event.target;
     var pos = dragtable.eventPosition(event);
 
@@ -227,8 +224,7 @@ dragtable = {
       document.attachEvent("onmouseup",   dragtable.dragEnd);
       window.event.cancelBubble = true;
       window.event.returnValue = false;
-    }
-    if (browser.isNS) {
+    } else {
       document.addEventListener("mousemove", dragtable.dragMove, true);
       document.addEventListener("mouseup",   dragtable.dragEnd, true);
       event.preventDefault();
@@ -259,9 +255,9 @@ dragtable = {
     if (dragtable.browser.isIE) {
       window.event.cancelBubble = true;
       window.event.returnValue = false;
-    }
-    if (dragtable.browser.isNS)
+    } else {
       event.preventDefault();
+    }
   },
 
   // Stop capturing mousemove and mouseup events.
@@ -270,8 +266,7 @@ dragtable = {
     if (dragtable.browser.isIE) {
       document.detachEvent("onmousemove", dragtable.dragMove);
       document.detachEvent("onmouseup", dragtable.dragEnd);
-    }
-    if (dragtable.browser.isNS) {
+    } else {
       document.removeEventListener("mousemove", dragtable.dragMove, true);
       document.removeEventListener("mouseup", dragtable.dragEnd, true);
     }
