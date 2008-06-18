@@ -139,13 +139,13 @@ dragtable = {
    var ex = 0, ey = 0;
    do {
      var curStyle = dragtable.browser.isIE ? elt.currentStyle
-                                           : window.getComputedStyle( elt, '' );
+                                           : window.getComputedStyle(elt, '');
      var supportFixed = !(dragtable.browser.isIE &&
                           dragtable.browser.version < 7);
      if (supportFixed && curStyle.position == 'fixed') {
        // Get the fixed el's offset
-       ex += parseInt( curStyle.left, 10 );
-       ey += parseInt( curStyle.top, 10 );
+       ex += parseInt(curStyle.left, 10);
+       ey += parseInt(curStyle.top, 10);
        // Compensate for scrolling
        ex += document.body.scrollLeft;
        ey += document.body.scrollTop;
