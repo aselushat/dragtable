@@ -2,15 +2,18 @@
   <head>
     <title>Draggable (and Sortable) Table Columns</title>
     <script type=text/javascript src="dragtable.js"></script>
-    <script
-      src="http://www.kryogenix.org/code/browser/sorttable/sorttable.js">
-    </script>
+    <script type=text/javascript src="sorttable.js"></script>
 
     <style type=text/css>
       table.thin, table.thin td, table.thin tr, table.thin th {
         border: thin solid black;
         border-collapse: collapse;
         background-color: white;
+      }
+      #fixed {
+        position: fixed;
+        left: 400px;
+        top: 100px;
       }
     </style>
   </head>
@@ -25,12 +28,11 @@
       <tr><td>Bob</td><td>1966-04-21</td><td>Red</td></tr>
     </table>
 
-    <h3>Embedded Table</h3>
-    <table>
+    <h3>Embedded+Fixed Table</h3>
+    <table id=fixed>
       <tr><td width=200>&nbsp;</td>
           <td>
-            <table class="thin draggable" cellpadding=2
-              style="background: white;">
+            <table class="thin draggable" cellpadding=2 style="background: white;">
               <tr><th>Name</th><th>Date</th><th>Favorite Color</th></tr>
               <tr><td>Dan</td><td>1984-07-12</td><td>Blue</td></tr>
               <tr><td>Alice</td><td>1980-07-22</td><td>Green</td></tr>

@@ -133,14 +133,31 @@ dragtable = {
     return {x: event.pageX, y: event.pageY};
   },
 
-  absolutePosition: function(elt) {
-    var ex = 0, ey = 0;
-    do {
-      ex += elt.offsetLeft;
-      ey += elt.offsetTop;
-    } while (elt = elt.offsetParent);
-    return {x: ex, y: ey};
-  },
+ // Determine the position of this element on the page. Many thanks to Magnus
+ // Kristiansen for help making this work with "position: fixed" elements.
+ absolutePosition: function(elt) {
+   var ex = 0, ey = 0;
+   do {
+     var curStyle = dragtable.browser.isIE ? elt.currentStyle
+                                           : window.getComputedStyle( elt, '' );
+     var supportFixed = !(dragtable.browser.isIE &&
+                          dragtable.browser.version < 7);
+     if (supportFixed && curStyle.position == 'fixed') {
+       // Get the fixed el's offset
+       ex += parseInt( curStyle.left, 10 );
+       ey += parseInt( curStyle.top, 10 );
+       // Compensate for scrolling
+       ex += document.body.scrollLeft;
+       ey += document.body.scrollTop;
+       // End the loop
+       break;
+     } else {
+       ex += elt.offsetLeft;
+       ey += elt.offsetTop;
+     }
+   } while (elt = elt.offsetParent);
+   return {x: ex, y: ey};
+ },
 
   // MouseDown handler -- sets up the appropriate mousemove/mouseup handlers
   // and fills in the global dragtable.dragObj object.
@@ -168,6 +185,7 @@ dragtable = {
     if (dragObj.startCol == -1) return;
 
     var new_elt = dragtable.fullCopy(table, false);
+    new_elt.style.margin = '0';
 
     // Copy the entire column
     var copySectionColumn = function(sec, col) {
