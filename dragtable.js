@@ -222,6 +222,7 @@ dragtable = {
 
     // Hold off adding the element until this is clearly a drag.
     dragObj.addedNode = false;
+    dragObj.tableContainer = dragObj.table.parentNode || document.body;
     dragObj.elNode = new_elt;
 
     // Save starting positions of cursor and element.
@@ -261,7 +262,7 @@ dragtable = {
     var dx = dragObj.cursorStartX - pos.x;
     var dy = dragObj.cursorStartY - pos.y;
     if (!dragObj.addedNode && dx * dx + dy * dy > dragtable.dragRadius2) {
-      document.body.appendChild(dragObj.elNode);
+      dragObj.tableContainer.insertBefore(dragObj.elNode, dragObj.table);
       dragObj.addedNode = true;
     }
 
@@ -294,7 +295,7 @@ dragtable = {
     if (!dragObj.addedNode) {
       return;
     }
-    document.body.removeChild(dragObj.elNode);
+    dragObj.tableContainer.removeChild(dragObj.elNode);
 
     // Determine whether the drag ended over the table, and over which column.
     var pos = dragtable.eventPosition(event);
