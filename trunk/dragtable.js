@@ -1,6 +1,6 @@
 /*
-  dragtable v0.9
-  June 11, 2008
+  dragtable v1.0
+  June 26, 2008
   Dan Vanderkam, http://danvk.org/dragtable/
                  http://code.google.com/p/dragtable/
 
@@ -33,6 +33,7 @@ dragtable = {
   },
 
   // Determine browser and version.
+  // TODO: eliminate browser sniffing except where it's really necessary.
   Browser: function() {
     var ua, s, i;
 
