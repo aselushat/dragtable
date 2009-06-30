@@ -418,7 +418,9 @@ dragtable = {
       var expires = "; expires="+date.toGMTString();
     }
     else var expires = "";
-    document.cookie = name+"="+value+expires+"; path=/";
+
+		var path = document.location.pathname;
+    document.cookie = name+"="+value+expires+"; path="+path
   },
 
   readCookie: function(name) {
