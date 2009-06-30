@@ -108,7 +108,8 @@ dragtable = {
     }
 
 		// Replay reorderings from cookies if there are any.
-		if (dragtable.cookiesEnabled() && table.id) {
+		if (dragtable.cookiesEnabled() && table.id &&
+				table.className.search(/\bforget-ordering\b/) == -1) {
 			dragtable.replayDrags(table);
 		}
   },
@@ -328,7 +329,8 @@ dragtable = {
     var targetCol = dragtable.findColumn(dragObj.table, pos.x);
     if (targetCol != -1 && targetCol != dragObj.startCol) {
       dragtable.moveColumn(dragObj.table, dragObj.startCol, targetCol);
-      if (dragObj.table.id && dragtable.cookiesEnabled()) {
+      if (dragObj.table.id && dragtable.cookiesEnabled() &&
+					dragObj.table.className.search(/\bforget-ordering\b/) == -1) {
         dragtable.rememberDrag(dragObj.table.id, dragObj.startCol, targetCol);
       }
     }
