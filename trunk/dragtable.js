@@ -377,7 +377,7 @@ if (document.addEventListener) {
 /*@cc_on @*/
 /*@if (@_win32)
   dgListenOnLoad = true;
-  document.write("<script id=__dt_onload defer src=javascript:void(0)><\/script>");
+  document.write("<script id=__dt_onload defer src=//0)><\/script>");
   var script = document.getElementById("__dt_onload");
   script.onreadystatechange = function() {
     if (this.readyState == "complete") {
