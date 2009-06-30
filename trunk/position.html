@@ -1,0 +1,27 @@
+<html>
+  <head>
+    <title>Dragtable 'position:relative' test</title>
+    <script type=text/javascript src="dragtable.js"></script>
+
+    <style type=text/css>
+      table.thin, table.thin td, table.thin tr, table.thin th {
+        border: thin solid black;
+        border-collapse: collapse;
+        background-color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <div style="position:relative; left:200px;">
+    <h3>Table 1</h3>
+    <table id=table class="thin draggable" cellpadding=2
+      style="background: white; position:absolute; left:100px;">
+      <tr><th>Name</th><th>Date</th><th>Favorite Color</th></tr>
+      <tr><td>Dan</td><td>1984-07-12</td><td>Blue</td></tr>
+      <tr><td>Alice</td><td>1980-07-22</td><td>Green</td></tr>
+      <tr><td>Ryan</td><td>1990-09-23</td><td>Orange</td></tr>
+      <tr><td>Bob</td><td>1966-04-21</td><td>Red</td></tr>
+    </table>
+    </div>
+  </body>
+</html>
