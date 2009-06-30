@@ -1,0 +1,50 @@
+<html>
+  <head>
+    <title>Dragtable 'position:relative' test</title>
+    <script type=text/javascript src="dragtable.js"></script>
+
+    <style type=text/css>
+      table.thin, table.thin td, table.thin tr, table.thin th {
+        border: thin solid black;
+        border-collapse: collapse;
+        background-color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <p>This example shows how to make a dynamically-generated table
+    draggable.</p>
+
+    <script type="text/javascript">
+      table = document.createElement("table");
+      table.className = "thin"
+      var headers = document.createElement("tr");
+      var col1 = document.createElement("th");
+      col1.innerHTML = "Column A";
+      headers.appendChild(col1);
+      var col2 = document.createElement("th");
+      col2.innerHTML = "Column B";
+      headers.appendChild(col2);
+      var thead = document.createElement("thead");
+      thead.appendChild(headers);
+      table.appendChild(thead);
+
+      var tbody = document.createElement("tbody");
+      for (var i = 1; i < 10; i++) {
+        var row = document.createElement("tr");
+        var cell = document.createElement("td");
+        cell.innerHTML = i;
+        row.appendChild(cell);
+        cell = document.createElement("td");
+        cell.innerHTML = i + i;
+        row.appendChild(cell);
+        tbody.appendChild(row);
+      }
+      table.appendChild(tbody);
+      document.body.appendChild(table);
+    </script>
+
+    <p><input type="button" value="Make Draggable"
+      onClick="dragtable.makeDraggable(table)"></p>
+  </body>
+</html>
