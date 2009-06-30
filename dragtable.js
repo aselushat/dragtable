@@ -136,14 +136,16 @@ dragtable = {
 
  // Determine the position of this element on the page. Many thanks to Magnus
  // Kristiansen for help making this work with "position: fixed" elements.
- absolutePosition: function(elt) {
+ absolutePosition: function(elt, stopAtRelative) {
    var ex = 0, ey = 0;
    do {
      var curStyle = dragtable.browser.isIE ? elt.currentStyle
                                            : window.getComputedStyle(elt, '');
      var supportFixed = !(dragtable.browser.isIE &&
                           dragtable.browser.version < 7);
-     if (supportFixed && curStyle.position == 'fixed') {
+     if (stopAtRelative && curStyle.position == 'relative') {
+       break;
+     } else if (supportFixed && curStyle.position == 'fixed') {
        // Get the fixed el's offset
        ex += parseInt(curStyle.left, 10);
        ey += parseInt(curStyle.top, 10);
@@ -214,7 +216,7 @@ dragtable = {
       new_elt.appendChild(copySectionColumn(table.tFoot, dragObj.startCol));
     }
 
-    var obj_pos = dragtable.absolutePosition(dragObj.origNode);
+    var obj_pos = dragtable.absolutePosition(dragObj.origNode, true);
     new_elt.style.position = "absolute";
     new_elt.style.left = obj_pos.x + "px";
     new_elt.style.top = obj_pos.y + "px";
