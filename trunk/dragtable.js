@@ -118,7 +118,13 @@ dragtable = {
   fullCopy: function(elt, deep) {
     var new_elt = elt.cloneNode(deep);
     new_elt.className = elt.className;
-    forEach(elt.style, function(k) { new_elt.style[k] = elt.style[k]; });
+    forEach(elt.style,
+        function(value, key, object) {
+          if (value == null) return;
+          if (typeof(value) == "string" && value.length == 0) return;
+
+          new_elt.style[key] = elt.style[key];
+        });
     return new_elt;
   },
 
