@@ -226,8 +226,8 @@ dragtable = {
     new_elt.style.position = "absolute";
     new_elt.style.left = obj_pos.x + "px";
     new_elt.style.top = obj_pos.y + "px";
-    new_elt.style.width = dragObj.origNode.offsetWidth;
-    new_elt.style.height = dragObj.origNode.offsetHeight;
+    new_elt.style.width = dragObj.origNode.offsetWidth + "px";
+    new_elt.style.height = dragObj.origNode.offsetHeight + "px";
     new_elt.style.opacity = 0.7;
 
     // Hold off adding the element until this is clearly a drag.
