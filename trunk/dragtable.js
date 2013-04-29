@@ -25,7 +25,7 @@
 // Copyright 2001 by Mike Hall.
 // See http://www.brainjar.com for terms of use.
 //*****************************************************************************
-dragtable = {
+var dragtable = {
   // How far should the mouse move before it's considered a drag, not a click?
   dragRadius2: 100,
   setMinDragDistance: function(x) {
@@ -40,26 +40,25 @@ dragtable = {
 
   // Determine browser and version.
   // TODO: eliminate browser sniffing except where it's really necessary.
-  Browser: function() {
-    var ua, s, i;
-
-    this.isIE    = false;
-    this.isNS    = false;
-    this.version = null;
-    ua = navigator.userAgent;
+  browser: (function(ua) {
+    var s, i, ret = {
+      isIE: false,
+      isNS: false,
+      version: null
+    };
 
     s = "MSIE";
     if ((i = ua.indexOf(s)) >= 0) {
       this.isIE = true;
       this.version = parseFloat(ua.substr(i + s.length));
-      return;
+      return ret;
     }
 
     s = "Netscape6/";
     if ((i = ua.indexOf(s)) >= 0) {
       this.isNS = true;
       this.version = parseFloat(ua.substr(i + s.length));
-      return;
+      return ret;
     }
 
     // Treat any other "Gecko" browser as NS 6.1.
@@ -67,10 +66,9 @@ dragtable = {
     if ((i = ua.indexOf(s)) >= 0) {
       this.isNS = true;
       this.version = 6.1;
-      return;
+      return ret;
     }
-  },
-  browser: null,
+  })(navigator.userAgent),
 
   // Detect all draggable tables and attach handlers to their headers.
   init: function() {
@@ -81,7 +79,6 @@ dragtable = {
     if (!document.createElement || !document.getElementsByTagName) return;
 
     dragtable.dragObj.zIndex = 0;
-    dragtable.browser = new dragtable.Browser();
     forEach(document.getElementsByTagName('table'), function(table) {
       if (table.className.search(/\bdraggable\b/) != -1) {
         dragtable.makeDraggable(table);
@@ -92,7 +89,7 @@ dragtable = {
   // The thead business is taken straight from sorttable.
   makeDraggable: function(table) {
     if (table.getElementsByTagName('thead').length == 0) {
-      the = document.createElement('thead');
+      var the = document.createElement('thead');
       the.appendChild(table.rows[0]);
       table.insertBefore(the,table.firstChild);
     }
@@ -369,14 +366,9 @@ dragtable = {
     // For whatever reason, sorttable tracks column indices this way.
     // Without a manual update, clicking one column will sort on another.
     var headrow = table.tHead.rows[0].cells;
-    for (var i=0; i<headrow.length; i++) {
+    for (i=0; i<headrow.length; i++) {
       headrow[i].sorttable_columnindex = i;
     }
-  },
-
-  // Are cookies enabled? We should not attempt to set cookies on a local file.
-  cookiesEnabled: function() {
-    return (window.location.protocol != 'file:') && navigator.cookieEnabled;
   },
 
   // Store a column swap in a cookie for posterity.
@@ -516,7 +508,7 @@ String.forEach = function(string, block, context) {
 };
 
 // globally resolve forEach enumeration
-var forEach = function(object, block, context) {
+var forEach = function(object, block, opt_context) {
   if (object) {
     var resolve = Object; // default
     if (object instanceof Function) {
@@ -524,7 +516,7 @@ var forEach = function(object, block, context) {
       resolve = Function;
     } else if (object.forEach instanceof Function) {
       // the object implements a custom forEach method so use that
-      object.forEach(block, context);
+      object.forEach(block, opt_context);
       return;
     } else if (typeof object == "string") {
       // the object is a string
@@ -533,6 +525,6 @@ var forEach = function(object, block, context) {
       // the object is array-like
       resolve = Array;
     }
-    resolve.forEach(object, block, context);
+    resolve.forEach(object, block, opt_context);
   }
 };
