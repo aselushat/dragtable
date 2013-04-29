@@ -1,30 +1,31 @@
-/*
-  dragtable v1.0
-  June 26, 2008
-  Dan Vanderkam, http://danvk.org/dragtable/
-                 http://code.google.com/p/dragtable/
-
-  Instructions:
-    - Download this file
-    - Add <script src="dragtable.js"></script> to your HTML.
-    - Add class="draggable" to any table you might like to reorder.
-    - Drag the headers around to reorder them.
-
-  This is code was based on:
-    - Stuart Langridge's SortTable (kryogenix.org/code/browser/sorttable)
-    - Mike Hall's draggable class (http://www.brainjar.com/dhtml/drag/)
-    - A discussion of permuting table columns on comp.lang.javascript
-
-  Licensed under the MIT license.
+/**
+ * @license
+ * dragtable v1.0
+ * June 26, 2008
+ * Dan Vanderkam, http://danvk.org/dragtable/
+ *                http://code.google.com/p/dragtable/
+ *
+ * This is code was based on:
+ *   - Stuart Langridge's SortTable (kryogenix.org/code/browser/sorttable)
+ *   - Mike Hall's draggable class (http://www.brainjar.com/dhtml/drag/)
+ *   - A discussion of permuting table columns on comp.lang.javascript
+ *
+ * Licensed under the MIT license.
+ *
+ * Here's the notice from Mike Hall's draggable script:
+ *
+ * Do not remove this notice.
+ *
+ * Copyright 2001 by Mike Hall.
+ * See http://www.brainjar.com for terms of use.
  */
-
-// Here's the notice from Mike Hall's draggable script:
-//*****************************************************************************
-// Do not remove this notice.
-//
-// Copyright 2001 by Mike Hall.
-// See http://www.brainjar.com for terms of use.
-//*****************************************************************************
+/*
+ * Instructions:
+ *   - Download this file
+ *   - Add <script src="dragtable.js"></script> to your HTML.
+ *   - Add class="draggable" to any table you might like to reorder.
+ *   - Drag the headers around to reorder them.
+ */
 var dragtable = {
   // How far should the mouse move before it's considered a drag, not a click?
   dragRadius2: 100,
@@ -436,7 +437,10 @@ var dragtable = {
    Supporting functions: bundled here to avoid depending on a library
    ****************************************************************** */
 
-// Dean Edwards/Matthias Miller/John Resig
+/**
+ * @license
+ * Dean Edwards/Matthias Miller/John Resig
+ */
 // has a hook for dragtable.init already been added? (see below)
 var dgListenOnLoad = false;
 
@@ -475,11 +479,12 @@ if (!dgListenOnLoad) {
   window.onload = dragtable.init;
 }
 
-// Dean's forEach: http://dean.edwards.name/base/forEach.js
-/*
-  forEach, version 1.0
-  Copyright 2006, Dean Edwards
-  License: http://www.opensource.org/licenses/mit-license.php
+/**
+ * @license
+ * http://dean.edwards.name/base/forEach.js
+ * forEach, version 1.0
+ * Copyright 2006, Dean Edwards
+ * License: http://www.opensource.org/licenses/mit-license.php
 */
 
 // array-like enumeration
