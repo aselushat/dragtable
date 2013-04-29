@@ -104,11 +104,11 @@ var dragtable = {
       headers[i].onmousedown = dragtable.dragStart;
     }
 
-		// Replay reorderings from cookies if there are any.
-		if (dragtable.cookiesEnabled() && table.id &&
-				table.className.search(/\bforget-ordering\b/) == -1) {
-			dragtable.replayDrags(table);
-		}
+    // Replay reorderings from cookies if there are any.
+    if (dragtable.cookiesEnabled() && table.id &&
+        table.className.search(/\bforget-ordering\b/) == -1) {
+      dragtable.replayDrags(table);
+    }
   },
 
   // Global object to hold drag information.
@@ -149,33 +149,33 @@ var dragtable = {
     return {x: event.pageX, y: event.pageY};
   },
 
- // Determine the position of this element on the page. Many thanks to Magnus
- // Kristiansen for help making this work with "position: fixed" elements.
- absolutePosition: function(elt, stopAtRelative) {
-   var ex = 0, ey = 0;
-   do {
-     var curStyle = dragtable.browser.isIE ? elt.currentStyle
-                                           : window.getComputedStyle(elt, '');
-     var supportFixed = !(dragtable.browser.isIE &&
-                          dragtable.browser.version < 7);
-     if (stopAtRelative && curStyle.position == 'relative') {
-       break;
-     } else if (supportFixed && curStyle.position == 'fixed') {
-       // Get the fixed el's offset
-       ex += parseInt(curStyle.left, 10);
-       ey += parseInt(curStyle.top, 10);
-       // Compensate for scrolling
-       ex += document.body.scrollLeft;
-       ey += document.body.scrollTop;
-       // End the loop
-       break;
-     } else {
-       ex += elt.offsetLeft;
-       ey += elt.offsetTop;
-     }
-   } while (elt = elt.offsetParent);
-   return {x: ex, y: ey};
- },
+  // Determine the position of this element on the page. Many thanks to Magnus
+  // Kristiansen for help making this work with "position: fixed" elements.
+  absolutePosition: function(elt, stopAtRelative) {
+    var ex = 0, ey = 0;
+    do {
+      var curStyle = dragtable.browser.isIE ? elt.currentStyle
+          : window.getComputedStyle(elt, '');
+      var supportFixed = !(dragtable.browser.isIE &&
+                           dragtable.browser.version < 7);
+      if (stopAtRelative && curStyle.position == 'relative') {
+        break;
+      } else if (supportFixed && curStyle.position == 'fixed') {
+        // Get the fixed el's offset
+        ex += parseInt(curStyle.left, 10);
+        ey += parseInt(curStyle.top, 10);
+        // Compensate for scrolling
+        ex += document.body.scrollLeft;
+        ey += document.body.scrollTop;
+        // End the loop
+        break;
+      } else {
+        ex += elt.offsetLeft;
+        ey += elt.offsetTop;
+      }
+    } while (elt = elt.offsetParent);
+    return {x: ex, y: ey};
+  },
 
   // MouseDown handler -- sets up the appropriate mousemove/mouseup handlers
   // and fills in the global dragtable.dragObj object.
@@ -327,7 +327,7 @@ var dragtable = {
     if (targetCol != -1 && targetCol != dragObj.startCol) {
       dragtable.moveColumn(dragObj.table, dragObj.startCol, targetCol);
       if (dragObj.table.id && dragtable.cookiesEnabled() &&
-					dragObj.table.className.search(/\bforget-ordering\b/) == -1) {
+          dragObj.table.className.search(/\bforget-ordering\b/) == -1) {
         dragtable.rememberDrag(dragObj.table.id, dragObj.startCol, targetCol);
       }
     }
@@ -381,21 +381,21 @@ var dragtable = {
     dragtable.createCookie(cookieName, new_val, dragtable.cookieDays);
   },
 
-	// Replay all column swaps for a table.
-	replayDrags: function(table) {
-		if (!dragtable.cookiesEnabled()) return;
-		var dragstr = dragtable.readCookie("dragtable-" + table.id);
-		if (!dragstr) return;
-		var drags = dragstr.split(',');
-		for (var i = 0; i < drags.length; i++) {
-			var pair = drags[i].split("/");
-			if (pair.length != 2) continue;
-			var a = parseInt(pair[0]);
-			var b = parseInt(pair[1]);
-			if (isNaN(a) || isNaN(b)) continue;
-			dragtable.moveColumn(table, a, b);
-		}
-	},
+  // Replay all column swaps for a table.
+  replayDrags: function(table) {
+    if (!dragtable.cookiesEnabled()) return;
+    var dragstr = dragtable.readCookie("dragtable-" + table.id);
+    if (!dragstr) return;
+    var drags = dragstr.split(',');
+    for (var i = 0; i < drags.length; i++) {
+      var pair = drags[i].split("/");
+      if (pair.length != 2) continue;
+      var a = parseInt(pair[0]);
+      var b = parseInt(pair[1]);
+      if (isNaN(a) || isNaN(b)) continue;
+      dragtable.moveColumn(table, a, b);
+    }
+  },
 
   // Cookie functions based on http://www.quirksmode.org/js/cookies.html
   // Cookies won't work for local files.
@@ -411,7 +411,7 @@ var dragtable = {
     }
     else var expires = "";
 
-		var path = document.location.pathname;
+    var path = document.location.pathname;
     document.cookie = name+"="+value+expires+"; path="+path
   },
 
