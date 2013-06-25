@@ -391,8 +391,8 @@ var dragtable = {
     for (var i = 0; i < drags.length; i++) {
       var pair = drags[i].split("/");
       if (pair.length != 2) continue;
-      var a = parseInt(pair[0]);
-      var b = parseInt(pair[1]);
+      var a = parseInt(pair[0], 10);
+      var b = parseInt(pair[1], 10);
       if (isNaN(a) || isNaN(b)) continue;
       dragtable.moveColumn(table, a, b);
     }
