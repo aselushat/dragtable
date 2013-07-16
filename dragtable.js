@@ -42,33 +42,11 @@ var dragtable = {
   // Determine browser and version.
   // TODO: eliminate browser sniffing except where it's really necessary.
   browser: (function(ua) {
-    var s, i, ret = {
-      isIE: false,
-      isNS: false,
-      version: null
+    var i = ua.indexOf('MSIE');
+    return {
+      isIE: i >= 0,
+      version: i >= 0 ? parseFloat(ua.substr(i + 4)) : null
     };
-
-    s = "MSIE";
-    if ((i = ua.indexOf(s)) >= 0) {
-      this.isIE = true;
-      this.version = parseFloat(ua.substr(i + s.length));
-      return ret;
-    }
-
-    s = "Netscape6/";
-    if ((i = ua.indexOf(s)) >= 0) {
-      this.isNS = true;
-      this.version = parseFloat(ua.substr(i + s.length));
-      return ret;
-    }
-
-    // Treat any other "Gecko" browser as NS 6.1.
-    s = "Gecko";
-    if ((i = ua.indexOf(s)) >= 0) {
-      this.isNS = true;
-      this.version = 6.1;
-      return ret;
-    }
   })(navigator.userAgent),
 
   // Detect all draggable tables and attach handlers to their headers.
